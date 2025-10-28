@@ -126,7 +126,7 @@ class TelemedidaService:
                 serial,
                 ip
             FROM cgm.metersight
-            WHERE read_timestamp > :fecha AND  read_timestamp < :fecha + interval '1 day'
+            WHERE read_timestamp - interval '5 hour' >= :fecha AND  read_timestamp - interval '5 hour' <= :fecha + interval '1 day'
         """)
 
         query_app_ops = text("""
@@ -175,7 +175,7 @@ class TelemedidaService:
             FROM meter_reading mr
             LEFT JOIN info_visit iv
                 ON iv.id::TEXT = mr.visit_id::TEXT
-            WHERE read_timestamp > :fecha AND  read_timestamp < :fecha + interval '1 day'
+            WHERE read_timestamp - interval '5 hour' >= :fecha AND  read_timestamp - interval '5 hour' <= :fecha + interval '1 day'
             ORDER BY 2 DESC
         """)
 
