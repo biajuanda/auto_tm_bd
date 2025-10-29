@@ -5,7 +5,7 @@ import json
 import logging
 import os
 from datetime import datetime, timezone
-from typing import Any
+from typing import Any, Union
 from urllib.parse import quote_plus
 
 import gspread
@@ -273,13 +273,13 @@ class TelemedidaService:
             "endColumnIndex":   self._col_to_index(col_end) + 1,
         }
 
-    def _format_date_mmddyyyy(self, dt: pd.Timestamp | datetime) -> str:
+    def _format_date_mmddyyyy(self, dt: Union[pd.Timestamp, datetime]) -> str:
         """Formatea una fecha al estilo MM/DD/YYYY."""
         if isinstance(dt, pd.Timestamp):
             dt = dt.to_pydatetime()
         return dt.strftime("%m/%d/%Y")
 
-    def buscar_fila_por_codigo(self, worksheet: Worksheet, codigo: str, col_index: dict) -> int | None:
+    def buscar_fila_por_codigo(self, worksheet: Worksheet, codigo: str, col_index: dict) -> Union[int, None]:
         """Busca código en la columna ID Interno."""
         try:
             cell = worksheet.find(codigo, in_column=col_index["ID Interno"])
